@@ -18,4 +18,4 @@ Recommended system specs:
 
 ## Precompiler Labs ##
 
-Lab details will be posted soon.
+See the ["Labs"](https://github.com/andrewdouglas/CodeMash2023-AppSec/tree/main/Labs) folder in this repository.  Lab instructions are written using markdown (.md) format, so following along in the browser via GitHub is a good way to go.
