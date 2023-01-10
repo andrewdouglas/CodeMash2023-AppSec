@@ -251,4 +251,102 @@ In this phase of the lab, we will show you how a WAF typically provides no prote
    	http://localhost:3000/ftp (200 OK)
    	http://localhost:3000/ftp/coupons_2013.md.bak (403 Forbidden)
    	http://localhost:3000/ftp/eastere.gg (403 Forbidden)
-   WARN-NEW: Timestamp Disclosure - Uni
+   WARN-NEW: Timestamp Disclosure - Unix [10096] x 1 
+   	http://localhost:3000/main.js (200 OK)
+   WARN-NEW: Cross-Domain Misconfiguration [10098] x 11 
+   	http://localhost:3000 (200 OK)
+   	http://localhost:3000/assets/public/favicon_js.ico (200 OK)
+   	http://localhost:3000/ftp (200 OK)
+   	http://localhost:3000/ftp/acquisitions.md (200 OK)
+   	http://localhost:3000/main.js (200 OK)
+   WARN-NEW: Modern Web Application [10109] x 12 
+   	http://localhost:3000 (200 OK)
+   	http://localhost:3000/ (200 OK)
+   	http://localhost:3000/juice-shop/build/routes/fileServer.js:16:13 (200 OK)
+   	http://localhost:3000/juice-shop/build/routes/fileServer.js:32:18 (200 OK)
+   	http://localhost:3000/juice-shop/node_modules/express/lib/router/index.js:280:10 (200 OK)
+   WARN-NEW: Dangerous JS Functions [10110] x 2 
+   	http://localhost:3000/main.js (200 OK)
+   	http://localhost:3000/vendor.js (200 OK)
+   FAIL-NEW: 0	FAIL-INPROG: 0	WARN-NEW: 9	WARN-INPROG: 0	INFO: 0	IGNORE: 0	PASS: 51
+   ```
+
+
+
+
+
+## Bonus: WAFs vs active scanning techniques 
+
+> Note: the active scans in this portion of the lab will take about 15 minutes each. Additionally, you will likely NOT want to run them at the same time, since we're targeting the same instance of Juice Shop. Doing multiple active scans against a single target may result in unexpected results.
+>
+> Due to time constraints, we suggest doing this step at a later time
+
+In Lab01 and earlier in this lab, you used the `zap-baseline.py` method which is a passive scan, meaning ZAP will browse a site and not attempt to put potentially malicious inputs into form fields. In this bonus module, we will show you how you can do a much more robust scan -- the ZAP full scan!
+
+> Note: due to speed reasons alone, not every organization runs a full ZAP scan at each DAST test cycle. Determining the best scan types and frequency of running them for your organization should be based on a consensus between developers, security, and the application owner. 
+>
+> Another concern for active scanning is something called form input pollution. Active scanners work by inserting potentially malicious content into target sites. This almost always results in several hundred submissions per form per scan! For this reason, we urge caution when running active scanners in production where they can cause confusion or hardship for downstream business processes which use this data.
+
+1. Run a full scan against Juice Shop directly using this command:
+   
+   ```
+   docker run --rm -t --network host owasp/zap2docker-stable:2.12.0 zap-full-scan.py -t http://localhost:3000
+   ```
+
+   > note: please be patient, this scan should take about 15 minutes.
+
+2. Run a full scan against Juice Shop through the WAF with this command:
+   
+   ```
+   docker run --rm -t --network host owasp/zap2docker-stable:2.12.0 zap-full-scan.py -t http://localhost:3001
+   ```
+
+
+
+## Move to the Pipeline (lab bonus)
+
+Making container based WAFs part of your pipeline is not too difficult. Because WAFs can cause issues with QA and other testing tools, it's recommended that you only deploy them in production. For completeness, you may want them to be deployed to a staging/user acceptance environment too.
+
+Here is a minimal pipeline fragment that could be added to an existing project pipeline.
+
+In Mac/Linux:
+```
+deploy-prod:
+  stage: deploy
+  script:
+    - echo "This job deploys a ModSecurity WAF to protect content from the $CI_COMMIT_BRANCH branch."
+    - run
+      name: ModSecurity Launch
+      command: |
+        docker run -p 3001:8080 --rm \
+        -v /opt/apsec/waf/logs:/var/log/apache2 \
+        -e PARANOIA=1 \
+        -e BACKEND=http://172.17.0.1:3000 \
+        -e PORT=8080 \
+        -e PROXY=1 \
+        -e LOGLEVEL=warn \
+        -e ACCESSLOG=/var/log/apache2/access.log \
+        -e ERRORLOG=/var/log/apache2/error.log \
+        owasp/modsecurity-crs:3.3.4-apache-202211240811
+  environment: production
+```
+
+
+
+## Recap
+
+In this lab, you completed the following learning objectives:
+
+- Used a WAF to block a vulnerable web application from attacks
+- Explored the use of a WAF as a logging solution
+- (optional) Explored how a WAF helps protect against 
+- How to deploy a WAF like ModSecurity as part of your pipeline
+
+## Additional ModSecurity Resources
+
+- ModSecurity Handbook ([ebook](https://www.feistyduck.com/library/modsecurity%2dhandbook%2d2ed%2dfree/)): a great collection of the ModSecurity configuration parameters, and examples of how to use them. 
+- OWASP ModSecurity Core Rule Set aka CRS ([website](https://coreruleset.org/)): OWASP updates and maintains the CRS project. This site is where the latest versions of the CRS are made avialble. 
+- For The Win: Finding WAF Evasions and Verifying Fixes with  FTW ([YouTube](https://www.youtube.com/watch?v=PGcSHN3mNtE)): Cristian Peron gives a 22 min talk about how to detect, evade WAFs, and fix WAF rules.
+- Azure native WAF options ([website](https://learn.microsoft.com/en-us/azure/web-application-firewall/overview)):  Microsoft Azure supports several different native WAFs. Azure Web Application Firewall, Azure Front Door, and Azure Application Gateway.
+- AWS native WAF options ([website](https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html)): Amazon has multiple services which interrelate to their WAF solutions. Most WAF functionality is in AWS WAF, but WAF like functionality can be found in other related services as well
+- GCP native WAF ([website](https://cloud.google.com/blog/products/identity-security/new-waf-capabilities-in-cloud-armor)): Many organizations use Google's Cloud Armor service to provide WAF as well as dDoS filtering capability.
