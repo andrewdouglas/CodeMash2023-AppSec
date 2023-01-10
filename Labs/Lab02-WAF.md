@@ -26,12 +26,22 @@ Best practice is to use a WAF for:
 
 
 
-## Prerequisites:
 
-- Docker (Docker Desktop or the Docker CLI engine)
-- The bkimminich/juice-shop:v14.3.1 container
-- The OWASP/modsecurity-crs:3.3.4-apache-202211240811 container
-- The owasp/zap2docker-stable:2.12.0 container
+## Prerequisites ##
+This lab requires Docker (Docker Desktop or otherwise) and 3 container images (Juice Shop, ZAP, and modsecurity).  See the README at [this repository](https://github.com/andrewdouglas/CodeMash2023-AppSec) for instructions on obtaining the prerequisite container images.  If today is the precompiler session and you don't have the images, don't worry - grab a flash drive from the front (these images are somewhat large and WIFI may not be adequate).  **If you downloaded the images from the flash drive**, you'll need to use 'docker load' vs. 'docker pull' like this:
+
+In Mac/Linux:
+```
+docker load < juice-shop.tar
+docker load < zap.tar
+docker load < modsecurity.tar
+```
+In Windows:
+```
+docker load -i juice-shop.tar
+docker load -i zap.tar
+docker load -i modsecurity.tar
+```
 
 
 
