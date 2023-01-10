@@ -19,3 +19,13 @@ Recommended system specs:
 ## Precompiler Labs ##
 
 See the ["Labs"](https://github.com/andrewdouglas/CodeMash2023-AppSec/tree/main/Labs) folder in this repository.  Lab instructions are written using markdown (.md) format, so following along in the browser via GitHub is a good way to go.
+
+## Resources ##
+
+- [OWASP SAST Recommendations](https://owasp.org/www-community/Source_Code_Analysis_Tools)
+- [OWASP SCA Recommendations](https://owasp.org/www-community/Component_Analysis)
+- [OWASP ZAP](https://owasp.org/www-project-zap/)
+- (book) *Offensive Countermeasures: The Art of Active Defense* by John Strand
+- Mick Douglas: https://www.infosecinnovations.com/
+- Andy Douglas: https://www.linkedin.com/in/andy-douglas-8187557/
+
