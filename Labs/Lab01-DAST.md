@@ -11,7 +11,7 @@ In this lab, you will learn how to automate a mature, open source penetration te
 - How to include DAST in your pipelines
 
 ## Prerequisites ##
-This lab requires Docker (Docker Desktop or otherwise) and 2 container images (Juice Shop and ZAP).  See the README at [this repository](https://github.com/andrewdouglas/CodeMash2023-AppSec) for instructions on obtaining the prerequisite container images.  If today is the precompiler session and you don't have the images, and would like to quickly download them via flash drive, ask Andy or Mick and we'll hook you up (these images are somewhat large and WIFI may not be adequate).  **If you downloaded the images from the flash drive**, you'll need to use 'docker load' vs. 'docker pull' like this:
+This lab requires Docker (Docker Desktop or otherwise) and 2 container images (Juice Shop and ZAP).  See the README at [this repository](https://github.com/andrewdouglas/CodeMash2023-AppSec) for instructions on obtaining the prerequisite container images.  If today is the precompiler session and you don't have the images, don't worry - grab a flash drive from the front (these images are somewhat large and WIFI may not be adequate).  **If you downloaded the images from the flash drive**, you'll need to use 'docker load' vs. 'docker pull' like this:
 
 In Mac/Linux:
 ```
