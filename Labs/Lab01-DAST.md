@@ -13,9 +13,15 @@ In this lab, you will learn how to automate a mature, open source penetration te
 ## Prerequisites ##
 This lab requires Docker (Docker Desktop or otherwise) and 2 container images (Juice Shop and ZAP).  See the README at [this repository](https://github.com/andrewdouglas/CodeMash2023-AppSec) for instructions on obtaining the prerequisite container images.  If today is the precompiler session and you don't have the images, and would like to quickly download them via flash drive, ask Andy or Mick and we'll hook you up (these images are somewhat large and WIFI may not be adequate).  **If you downloaded the images from the flash drive**, you'll need to use 'docker load' vs. 'docker pull' like this:
 
+In Mac/Linux:
 ```
-docker load < juice-shop.tar.gz
-docker load < zap.tar.gz
+docker load < juice-shop.tar
+docker load < zap.tar
+```
+In Windows:
+```
+docker load -i juice-shop.tar
+docker load -i zap.tar
 ```
 
 ## Prepare the Target ##
